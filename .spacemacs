@@ -276,14 +276,6 @@
   ;; Defining avy-jump with two characters, on s
   ;; (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2)
 
-  ;; Habitica config
-
-  (add-to-list 'org-modules 'org-habit)
-  (add-to-list 'load-path "/home/carlo/.emacs.d/private/habitrpg.el")
-  (require 'habitrpg)
-  (setq habitrpg-api-user "9835d4c7-7d78-49f0-8f3e-b3dd7036488b")
-  (setq habitrpg-api-token "4f816fc3-0d02-44cb-837d-fc7f25eb943c")
-
   ;; Global visual-line mode
   (global-visual-line-mode)
   ;; Voglio che, essendo attivo ~global-visual-line-mode~, i tasti di movimento di vim si spostino seguendo le linee visuali, anziche' quelle logiche.
