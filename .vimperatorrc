@@ -1,0 +1,13 @@
+:set gui=none
+:set gui=tabs
+
+:cnoremap <C-j> <Tab>
+:cnoremap <C-k> <S-Tab>
+
+:set editor="emacsclient"
+
+:set focuscontent
+
+:set maxitems=40
+
+:set tabnumbers=true
