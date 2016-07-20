@@ -11,12 +11,14 @@
      git github version-control
      latex markdown
      spell-checking syntax-checking
-     erc
+     erc gnus
      dash
      extra-langs
      spotify
      elm agda racket rust purescript
      themes-megapack
+
+     intero
 
 
      (org :variables
@@ -30,18 +32,23 @@
             shell-default-shell 'eshell
             shell-enable-smart-eshell t)
 
-     (haskell :variables
-              haskell-enable-hindent-style "johan-tibell"
-              haskell-process-type 'stack-ghci
-              haskell-tags-on-save t
-              haskell-process-use-presentation-mode t
-              haskell-process-suggest-haskell-docs-imports nil)
+     ;; (haskell :variables
+     ;;          haskell-enable-hindent-style "johan-tibell"
+     ;;          haskell-process-type 'stack-ghci
+     ;;          haskell-tags-on-save t
+     ;;          haskell-process-use-presentation-mode t
+     ;;          haskell-process-suggest-haskell-docs-imports nil)
 
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-complete-with-key-sequence "jk"
-                      auto-completion-enable-snippets-in-popup t))
+                      auto-completion-enable-snippets-in-popup t)
+
+     (mu4e :variables
+           mu4e-installation-path "/home/carlo/engine/mu-0.9.16/mu4e/")
+
+     )
 
    dotspacemacs-additional-packages '(helm-pages
                                       focus
@@ -55,6 +62,8 @@
                                       deferred
                                       hl-sentence
                                       visual-regexp-steroids
+                                      evil-vimish-fold
+                                      yankpad
                                       processing-mode
                                       togetherly)
    dotspacemacs-excluded-packages '()
@@ -70,7 +79,7 @@
    dotspacemacs-verbose-loading nil
    dotspacemacs-startup-banner 'official
    dotspacemacs-startup-lists nil
-   dotspacemacs-themes '(spacemacs-light spacemacs-dark)
+   dotspacemacs-themes '(sanityinc-solarized-light spacemacs-light spacemacs-dark)
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("Source Code Pro"
                                :size 21
@@ -125,16 +134,16 @@
   ;; Initial scratch buffer should be org-mode
   (setq dotspacemacs-scratch-mode 'org-mode)
 
-  ;; Haskell configuration
-  (setq-default flycheck-disabled-checkers '(haskell-ghc haskell-stack-ghc haskell-hlint))
-  (push 'haskell-mode spacemacs-indent-sensitive-modes)
+  ;; ;; Haskell configuration
+  ;; (setq-default flycheck-disabled-checkers '(haskell-ghc haskell-stack-ghc haskell-hlint))
+  ;; (push 'haskell-mode spacemacs-indent-sensitive-modes)
 
-  (setq haskell-process-suggest-remove-import-lines nil
-        haskell-process-suggest-hoogle-imports      nil
-        haskell-interactive-popup-errors            nil
-        ;; ghc-report-errors                           nil
-        flycheck-indication-mode                    nil
-        flycheck-ghc-args (quote ("-fno-warn-type-defaults")))
+  ;; (setq haskell-process-suggest-remove-import-lines nil
+  ;;       haskell-process-suggest-hoogle-imports      nil
+  ;;       haskell-interactive-popup-errors            nil
+  ;;       ;; ghc-report-errors                           nil
+  ;;       flycheck-indication-mode                    nil
+  ;;       flycheck-ghc-args (quote ("-fno-warn-type-defaults")))
 
   (defun haskell-indentation-advice ()
     (when (and (< 1 (line-number-at-pos))
@@ -162,6 +171,9 @@
   (global-set-key (kbd "<f7>") 'meditans/compile-and-switch)
   (global-set-key (kbd "<f8>") 'meditans/switch-and-maximize)
 
+  ;; Frame maximisation configuration
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
   ;; Togetherly configuration
   (require 'togetherly)
@@ -231,10 +243,11 @@
 
   ;; Org mode config for latex code snippets highlighting.
   ;; Comes from http://praveen.kumar.in/2012/03/10/org-mode-latex-and-minted-syntax-highlighting/
+  ;; BUT one should remember to recompile org.el like in http://permalink.gmane.org/gmane.emacs.orgmode/50536
+  ;; otherwise loses dvi preview!
 
   (require 'ox-latex)
   (setq org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
 
   (setq org-latex-pdf-process
         '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -253,10 +266,15 @@
     (outline-previous-heading)
     (outorg-edit-as-org)
     (spacemacs/toggle-maximize-buffer)
+    (spacemacs/toggle-spelling-checking-off)
+    (spacemacs/toggle-auto-fill-mode-on)
     (outorg-save-edits-to-tmp-file)
     (org-toggle-latex-fragment '(16)))
 
   (global-set-key (kbd "<f10>") 'meditans/outshine-edit)
+
+  ;; Defining avy-jump with two characters, on s
+  ;; (define-key evil-normal-state-map (kbd "s") 'avy-goto-char-2)
 
   ;; Habitica config
 
@@ -284,6 +302,52 @@
   (setq processing-location "/home/carlo/code/arduino/engine/processing/processing-java")
   (setq processing-application-dir "/home/carlo/code/arduino/engine/processing/processing")
   (setq processing-sketchbook-dir "/home/carlo/code/arduino/processing")
+
+  ;; Filtra i messaggi nell'echo area
+  ;; presa da https://www.emacswiki.org/emacs/EchoArea
+  (defvar message-filter-regexp-list '("^Starting new Ispell process \\[.+\\] \\.\\.\\.$"
+                                       "^Ispell process killed$"
+                                       "^Wrote.*$")
+    "filter formatted message string to remove noisy messages")
+  (defadvice message (around message-filter-by-regexp activate)
+    (if (not (ad-get-arg 0))
+        ad-do-it
+      (let ((formatted-string (apply 'format (ad-get-args 0))))
+        (if (and (stringp formatted-string)
+                 (some (lambda (re) (string-match re formatted-string)) message-filter-regexp-list))
+            (save-excursion
+              (set-buffer "*Messages*")
+              (goto-char (point-max))
+              (insert formatted-string "\n"))
+          (progn
+            (ad-set-args 0 `("%s" ,formatted-string))
+            ad-do-it)))))
+
+  ;; Configurazione di gnus con emacs, presa dallo spacemacs help, layer gnus
+  ;; Get email, and store in nnml
+  (setq gnus-secondary-select-methods
+        '(
+          (nnimap "gmail"
+                  (nnimap-address
+                   "imap.gmail.com")
+                  (nnimap-server-port 993)
+                  (nnimap-stream ssl))
+          ))
+
+  ;; Send email via Gmail:
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-default-smtp-server "smtp.gmail.com")
+
+  ;; Archive outgoing email in Sent folder on imap.gmail.com:
+  (setq gnus-message-archive-method '(nnimap "imap.gmail.com")
+        gnus-message-archive-group "[Gmail]/Sent Mail")
+
+  ;; store email in ~/gmail directory
+  (setq nnml-directory "~/mail/gmail")
+  (setq message-directory "~/mail/gmail")
+
+  ;; Set org-mode mu4e support, from https://vxlabs.com/2015/01/28/sending-emails-with-math-and-source-code/
+  (setq org-mu4e-convert-to-html t)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -305,7 +369,7 @@
  '(org-agenda-files (quote ("~/doc/agenda.org")))
  '(org-format-latex-options
    (quote
-    (:foreground default :background default :scale 1.8 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+    (:foreground default :background default :scale 1.8 :html-foreground "Black" :html-background "Transparent" :html-scale 1.3 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-latex-listings-langs
    (quote
@@ -335,8 +399,13 @@
    (quote
     (("" "amscd" t)
      ("" "stmaryrd" t)
-     ("" "bussproofs" t))))
- '(paradox-github-token t))
+     ("" "bussproofs" t)
+     ("" "tikz" t)
+     ("" "tikz-cd" t)
+     ("" "minted" t))))
+ '(paradox-github-token t)
+ '(user-mail-address "meditans@gmail.com")
+ '(yas-indent-line (quote fixed)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
