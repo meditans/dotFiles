@@ -14,7 +14,7 @@ export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 export FZF_DEFAULT_OPTS='--extended --multi --inline-info --prompt="fzf> "'
 
 ############################################################ Adding ghc and ghci to PATH
-PATH=~/.stack/programs/x86_64-linux/ghc-7.10.3/bin:$PATH
+PATH=~/.local/bin:~/.stack/programs/x86_64-linux/ghc-7.10.3/bin:$PATH
 
 ############################################################ stack autocompletion
 eval "$(stack --bash-completion-script stack)"
