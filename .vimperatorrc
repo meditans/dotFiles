@@ -11,3 +11,6 @@
 :set maxitems=40
 
 :set tabnumbers=true
+
+:map <F2> :set gui=nonavigation<CR>
+:map <F3> :set gui=navigation<CR>
