@@ -18,8 +18,7 @@
      elm agda racket rust purescript
      themes-megapack
 
-     intero
-
+     ;; intero
 
      (org :variables
           org-enable-github-support t)
@@ -32,12 +31,7 @@
             shell-default-shell 'eshell
             shell-enable-smart-eshell t)
 
-     ;; (haskell :variables
-     ;;          haskell-enable-hindent-style "johan-tibell"
-     ;;          haskell-process-type 'stack-ghci
-     ;;          haskell-tags-on-save t
-     ;;          haskell-process-use-presentation-mode t
-     ;;          haskell-process-suggest-haskell-docs-imports nil)
+     (haskell :variables haskell-completion-backend 'intero)
 
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t
@@ -133,17 +127,6 @@
 
   ;; Initial scratch buffer should be org-mode
   (setq dotspacemacs-scratch-mode 'org-mode)
-
-  ;; ;; Haskell configuration
-  ;; (setq-default flycheck-disabled-checkers '(haskell-ghc haskell-stack-ghc haskell-hlint))
-  ;; (push 'haskell-mode spacemacs-indent-sensitive-modes)
-
-  ;; (setq haskell-process-suggest-remove-import-lines nil
-  ;;       haskell-process-suggest-hoogle-imports      nil
-  ;;       haskell-interactive-popup-errors            nil
-  ;;       ;; ghc-report-errors                           nil
-  ;;       flycheck-indication-mode                    nil
-  ;;       flycheck-ghc-args (quote ("-fno-warn-type-defaults")))
 
   (defun haskell-indentation-advice ()
     (when (and (< 1 (line-number-at-pos))
@@ -405,3 +388,4 @@
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(flycheck-fringe-warning ((t (:background "orange" :foreground "#b58900")))))
