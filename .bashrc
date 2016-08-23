@@ -29,3 +29,6 @@ shopt -s nocaseglob
 
 ########################################################### A true clear command
 alias clear="clear && printf '\e[3J'"
+
+########################################################### A simpler prompt
+PS1='[\u \W] '
