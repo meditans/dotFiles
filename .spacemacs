@@ -101,6 +101,7 @@
    dotspacemacs-smooth-scrolling t
    dotspacemacs-smartparens-strict-mode nil
    dotspacemacs-highlight-delimiters 'all
+   dotspacemacs-folding-method 'origami
    dotspacemacs-persistent-server nil
    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
    dotspacemacs-default-package-repository nil
