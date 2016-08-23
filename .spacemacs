@@ -10,13 +10,14 @@
      emacs-lisp
      git github version-control
      latex markdown
-     spell-checking syntax-checking
      erc gnus
      dash
      extra-langs
      spotify
-     elm agda racket rust purescript
+     elm agda racket rust purescript yaml
      themes-megapack
+     syntax-checking
+     (spell-checking :variables spell-checking-enable-auto-dictionary t)
 
      ;; intero
 
@@ -38,10 +39,6 @@
                       auto-completion-enable-sort-by-usage t
                       auto-completion-complete-with-key-sequence "jk"
                       auto-completion-enable-snippets-in-popup t)
-
-     (mu4e :variables
-           mu4e-installation-path "/home/carlo/engine/mu-0.9.16/mu4e/")
-
      )
 
    dotspacemacs-additional-packages '(helm-pages
