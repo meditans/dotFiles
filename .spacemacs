@@ -48,7 +48,6 @@
                                       typing
                                       annotate
                                       ox-reveal
-                                      2048-game
                                       dired-narrow
                                       outshine
                                       deferred
