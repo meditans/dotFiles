@@ -321,6 +321,14 @@
 
   ;; Set org-mode mu4e support, from https://vxlabs.com/2015/01/28/sending-emails-with-math-and-source-code/
   (setq org-mu4e-convert-to-html t)
+
+  ;; Yankpad initialization, from https://github.com/Kungsgeten/yankpad
+  (use-package yankpad
+    :ensure t
+    :defer 10
+    :init
+    (setq yankpad-file "~/doc/yankpad.org"))
+  (define-key evil-normal-state-map (kbd "<f12>") 'yankpad-insert)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
