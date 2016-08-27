@@ -32,7 +32,8 @@
             shell-default-shell 'eshell
             shell-enable-smart-eshell t)
 
-     (haskell :variables haskell-completion-backend 'intero)
+     (haskell :variables haskell-completion-backend 'intero
+              haskell-enable-hindent-style "johann-tibell")
 
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t
