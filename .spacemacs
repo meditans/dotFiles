@@ -13,13 +13,10 @@
      erc gnus
      dash
      extra-langs
-     spotify
-     elm agda racket rust purescript yaml
+     purescript yaml
      themes-megapack
      syntax-checking
      (spell-checking :variables spell-checking-enable-auto-dictionary t)
-
-     ;; intero
 
      (org :variables
           org-enable-github-support t)
