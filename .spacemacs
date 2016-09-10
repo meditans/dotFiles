@@ -13,6 +13,7 @@
      erc gnus
      dash
      extra-langs
+     finance
      purescript yaml
      themes-megapack
      syntax-checking
