@@ -16,7 +16,10 @@
      purescript yaml
      themes-megapack
      syntax-checking
-     (spell-checking :variables spell-checking-enable-auto-dictionary t)
+     speed-reading
+     (spell-checking :variables
+                     spell-checking-enable-auto-dictionary t
+                     spell-checking-enable-by-default nil)
 
      (org :variables
           org-enable-github-support t)
