@@ -9,7 +9,7 @@
    dotspacemacs-configuration-layers '(
      emacs-lisp
      git github version-control
-     latex markdown
+     latex bibtex markdown
      erc gnus
      dash
      extra-langs
@@ -232,9 +232,7 @@
   (setq org-latex-listings 'minted)
 
   (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -bibtex -f %f"))
 
   ;; Outshine config
   (require 'outshine)
